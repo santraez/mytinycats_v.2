@@ -1,0 +1,31 @@
+@use 'variables' as v;
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-padding-top: 0rem;
+}
+*, 
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  font-family: v.$main-font;
+  font-size: 1rem;
+}
+.container {
+  width: 95%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+.display-none {
+  display: none !important;
+}
+p {
+  font-size: 2rem;
+  color: v.$black;
+}
+a {
+  text-decoration: none;
+}

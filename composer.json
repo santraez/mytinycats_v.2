@@ -1,0 +1,19 @@
+{
+  "name": "santraez/mytinycats_v.2",
+  "description": "coloring books store",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "MVC\\": "./",
+      "Controller\\": "./controllers/",
+      "Model\\": "./models/"
+    }
+  },
+  "authors": [
+    {
+      "name": "santraez",
+      "email": "santraez@gmail.com"
+    }
+  ],
+  "require": {}
+}

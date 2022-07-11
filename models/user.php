@@ -9,6 +9,7 @@ class User extends ActiveRecord {
   public $display;
   public $email;
   public $password;
+  public $confirmPassword;
   public $admin;
   public $confirmed;
   public $token;
@@ -19,6 +20,7 @@ class User extends ActiveRecord {
     $this->display = $args['display'] ?? '';
     $this->email = $args['email'] ?? '';
     $this->password = $args['password'] ?? '';
+    $this->confirmPassword = $args['confirmPassword'] ?? '';
     $this->admin = $args['admin'] ?? null;
     $this->confirmed = $args['confirmed'] ?? null;
     $this->token = $args['token'] ?? '';
@@ -28,6 +30,25 @@ class User extends ActiveRecord {
   public function validateNewAccount() {
     if(!$this->display) {
       self::$alerts['error'][] = 'Display name is required';
+    }
+    if(!$this->email) {
+      self::$alerts['error'][] = 'Email is required';
+    }
+    if(!$this->password) {
+      self::$alerts['error'][] = 'Password is required';
+    }
+    if($this->password) {
+      if(strlen($this->password) < 8) {
+        self::$alerts['error'][] = 'Password must be at least 8 characters';
+      }
+    }
+    if($this->password && !$this->confirmPassword && (strlen($this->password) >= 8)) {
+      self::$alerts['error'][] = 'Confirm password is required';
+    }
+    if($this->password && $this->confirmPassword && (strlen($this->password) >= 8))  {
+      if($this->password !== $this->confirmPassword) {
+        self::$alerts['error'][] = 'Passwords do not match';
+      }
     }
     return self::$alerts;
   }

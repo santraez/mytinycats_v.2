@@ -4,6 +4,7 @@
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Earum maxime dolor doloribus eius quam itaque.</p>
 	</div> <!-- CONTENT -->
   <div class="signup__form">
+    <?php include_once __DIR__ . "/../templates/alerts.php" ?>
     <h3 class="signup__form--title">signup</h3>
     <div class="signup__form--container">
       <div class="signup__form-up">
@@ -38,7 +39,7 @@
           <input
             type="password"
             id="confirm-password"
-            name="confirm-password"
+            name="confirmPassword"
             class="signup-up-form__input"
             placeholder="repeat your password"
           >

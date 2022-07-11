@@ -8,13 +8,20 @@ class LoginController {
   }
   public static function signup(Router $router) {
     $user = new User;
+    // EMPTY ALERTS
+    $alerts = [];
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $user->sync($_POST);
       $alerts = $user->validateNewAccount();
-      debug($alerts);
+      // CHECK IF ALERTS IS EMPTY
+      if(empty($alerts)) {
+        // CHECK IF DISPLAY IS ALREADY IN USE
+        // CHECK IF EMAIL IS ALREADY IN USE
+      }
     }
     $router->render('auth/signup', [
-      'user'=>$user
+      'user'=>$user,
+      'alerts'=>$alerts
     ]);
   }
   public static function login(Router $router) {

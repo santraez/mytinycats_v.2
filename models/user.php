@@ -21,8 +21,8 @@ class User extends ActiveRecord {
     $this->email = $args['email'] ?? '';
     $this->password = $args['password'] ?? '';
     $this->confirmPassword = $args['confirmPassword'] ?? '';
-    $this->admin = $args['admin'] ?? null;
-    $this->confirmed = $args['confirmed'] ?? null;
+    $this->admin = $args['admin'] ?? '0';
+    $this->confirmed = $args['confirmed'] ?? '0';
     $this->token = $args['token'] ?? '';
     $this->created = $args['created'] ?? '';
   }
@@ -51,5 +51,20 @@ class User extends ActiveRecord {
       }
     }
     return self::$alerts;
+  }
+  // CHECK IF USER EXISTS
+  public function validateUser() {
+    $query = "SELECT * FROM " . self::$table . " WHERE email = '" . $this->email . "' LIMIT 1";
+    $result = self::$db->query($query);
+    if ($result->num_rows) {
+      self::$alerts['error'][] = 'EMAIL ALREADY EXIST';
+    }
+    return $result;
+  }
+  public function hashPassword() {
+    $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+  }
+  public function createToken() {
+    $this->token = uniqid();
   }
 }

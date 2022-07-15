@@ -19,5 +19,8 @@ $router->post('/recover-password', [LoginController::class, 'recoverPassword']);
 // CREATE ACCOUNT
 $router->get('/signup', [LoginController::class, 'signup']);
 $router->post('/signup', [LoginController::class, 'signup']);
+// CONFIRM ACCOUNT
+$router->get('/confirm-account', [LoginController::class, 'confirm']);
+$router->get('/message', [LoginController::class, 'message']);
 // CHECK ROUTER
 $router->checkRoutes();

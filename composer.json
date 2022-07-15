@@ -6,7 +6,8 @@
     "psr-4": {
       "MVC\\": "./",
       "Controller\\": "./controllers/",
-      "Model\\": "./models/"
+      "Model\\": "./models/",
+      "Class\\": "./classes/"
     }
   },
   "authors": [
@@ -15,5 +16,7 @@
       "email": "santraez@gmail.com"
     }
   ],
-  "require": {}
+  "require": {
+    "phpmailer/phpmailer": "^6.6"
+  }
 }

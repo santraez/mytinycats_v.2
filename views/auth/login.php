@@ -1,4 +1,5 @@
 <section class="container login">
+  <?php include_once __DIR__ . "/../templates/alerts.php" ?>
   <h3 class="login__title">login</h3>
   <div class="login__container">
     <div class="login-up">
@@ -10,6 +11,7 @@
           name="email"
           class="login-up__form--input"
           placeholder="your email"
+          value="<?php echo s($auth->email) ?>"
         />
         <div class="login-up__form--forgot">
         <label for="password" class="login-up__form--label">Password</label>

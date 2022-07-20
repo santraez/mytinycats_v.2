@@ -94,10 +94,10 @@ class ActiveRecord {
   }
   public function create() {
     $attributes = $this->sanitizeAttributes();
-    $query = " INSERT INTO " . static::$table . " ( ";
+    $query = "INSERT INTO " . static::$table . " ( ";
     $query .= join(', ', array_keys($attributes));
     $query .= " ) VALUES (' "; 
-    $query .= join("', '", array_values($attributes));
+    $query .= join(', ', array_values($attributes));
     $query .= " ') ";
     $result = self::$db->query($query);
     return [
@@ -106,13 +106,13 @@ class ActiveRecord {
     ];
   }
   public function update() {
-    $atributos = $this->sanitizeAttributes();
+    $attributes = $this->sanitizeAttributes();
     $values = [];
     foreach($attributes as $key => $value) {
       $values[] = "{$key}='{$value}'";
     }
-    $query = "UPDATE " . static::$table ." SET ";
-    $query .=  join(', ', $values );
+    $query = "UPDATE " . static::$table . " SET ";
+    $query .= join(', ', $values );
     $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
     $query .= " LIMIT 1 "; 
     $result = self::$db->query($query);

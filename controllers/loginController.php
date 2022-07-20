@@ -33,7 +33,6 @@ class LoginController {
           if ($result) {
             header('Location: /message');
           }
-          //debug($user);
         }
       }
     }
@@ -43,7 +42,17 @@ class LoginController {
     ]);
   }
   public static function login(Router $router) {
-    $router->render('auth/login');
+    $alerts = [];
+    $auth = new User;
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $auth = new User($_POST);
+      $alerts = $auth->validateLogin();
+      //debug($auth);
+    }
+    $router->render('auth/login', [
+      'alerts' => $alerts,
+      'auth' => $auth
+    ]);
   }
   public static function logout() {
     echo 'logout';

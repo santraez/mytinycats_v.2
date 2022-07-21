@@ -47,8 +47,32 @@ class LoginController {
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $auth = new User($_POST);
       $alerts = $auth->validateLogin();
-      //debug($auth);
+      if(empty($alerts)) {
+        // CHECK USER EXIST
+        $user = User::where('email', $auth->email);
+        if($user) {
+          // CHECK PASSWORD
+          if($user->checkPasswordAndVerified($auth->password)) {
+            //AUTHENTICATE USER
+            session_start();
+            $_SESSION['id'] = $user->id;
+            $_SESSION['display'] = $user->display;
+            $_SESSION['email'] = $user->email;
+            $_SESSION['login'] = true;
+            // REDIRECT
+            if($user->admin === '1') {
+              $_SESSION['admin'] = $user->admin ?? null;
+              header('Location: /admin');
+            } else {
+              header('Location: /user');
+            }
+          }
+        } else {
+          User::setAlert('error', 'user not exist');
+        }
+      }
     }
+    $alerts = User::getAlerts();
     $router->render('auth/login', [
       'alerts' => $alerts,
       'auth' => $auth
@@ -58,12 +82,51 @@ class LoginController {
     echo 'logout';
   }
   public static function forgotPassword(Router $router) {
+    $alerts = [];
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $auth = new User($_POST);
+      $alerts = $auth->validateEmail();
+      if(empty($alerts)) {
+        $user = User::where('email', $auth->email);
+        if($user && $user->confirmed === '1') {
+          // GENERATE TOKEN
+          $user->createToken();
+          $user->save();
+          // SEND EMAIL
+          $email = new Email($user->email, $user->display, $user->token);
+          $email->sendInstructions();
+          // SUCCESS MESSAGE
+          User::setAlert('success', 'We send you a email to update');
+        } else {
+          // ERROR MESSAGE
+          User::setAlert('error', 'User not exist or It\'s not confirmed');
+        }
+      }
+    }
+    $alerts = User::getAlerts();
     $router->render('auth/forgot-password', [
-      
+      'alerts' => $alerts
     ]);
   }
-  public static function recoverPassword() {
-    echo 'recover password';
+  public static function recoverPassword(Router $router) {
+    $alerts = [];
+    $error = false;
+    $token = s($_GET['token']);
+    // SEARCH USER FOR TOKEN
+    $user = User::where('token', $token);
+    if(empty($user)) {
+      User::setAlert('error', 'Invalid Token');
+      $error = true;
+    }
+    if($_SERVER['REQUEST_METHOD'] === POST) {
+      
+    }
+    //debug($user);
+    $alerts = User::getAlerts();
+    $router->render('auth/recover-password', [
+      'alerts' => $alerts,
+      'error' => $error
+    ]);
   }
   public static function message(Router $router) {
     $router->render('auth/message');

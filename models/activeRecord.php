@@ -97,7 +97,7 @@ class ActiveRecord {
     $query = "INSERT INTO " . static::$table . " ( ";
     $query .= join(', ', array_keys($attributes));
     $query .= " ) VALUES (' "; 
-    $query .= join(', ', array_values($attributes));
+    $query .= join("', '", array_values($attributes));
     $query .= " ') ";
     $result = self::$db->query($query);
     return [

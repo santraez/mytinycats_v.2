@@ -39,4 +39,33 @@ class Email {
     // SEND EMAIL
     $mail->send();
   }
+  public function sendInstructions() {
+    // CREATE THE EMAIL OBJECT
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+    $mail->Host = 'smtp.mailtrap.io';
+    $mail->SMTPAuth = true;
+    $mail->Port = 2525;
+    $mail->Username = '04ff2bf9dd454e';
+    $mail->Password = 'dd052ac862a24c';
+
+    $mail->setFrom('santraez@gmail.com');
+    $mail->addAddress('santraez@gmail.com', 'mytinycats.com');
+    $mail->Subject = 'Reset your password';
+
+    // SET HTML
+    $mail->isHTML(TRUE);
+    $mail->CharSet = 'UTF-8';
+
+    $content  = '<html>';
+    $content .= '<p><strong>hola ' . $this->display . '</strong>You have requested to reset your password on MyTinyCats.com, only you confirm click the follow link</p>';
+    $content .= '<p>Click here: <a href="http://localhost:8000/recover-password?token=' . $this->token . '">Reset your password</a></p>';
+    $content .= '<p>If you not getting this account, ignored the message</p>';
+    $content .= '</html>';
+
+    $mail->Body = $content;
+
+    // SEND EMAIL
+    $mail->send();
+  }
 }

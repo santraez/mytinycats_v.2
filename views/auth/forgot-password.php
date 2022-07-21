@@ -1,4 +1,5 @@
 <section class="container forgot">
+  <?php include_once __DIR__ . '/../templates/alerts.php'; ?>
   <h3 class="forgot__title">reset your password</h3>
   <div class="forgot__container">
     <div class="forgot-up">

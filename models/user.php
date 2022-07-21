@@ -62,6 +62,13 @@ class User extends ActiveRecord {
     }
     return self::$alerts;
   }
+  // VALIDATE EMAIL
+  public function validateEmail() {
+    if(!$this->email) {
+      self::$alerts['error'][] = 'email is required';
+    }
+    return self::$alerts;
+  }
   // CHECK IF USER EXISTS
   public function validateUser() {
     $query = "SELECT * FROM " . self::$table . " WHERE email = '" . $this->email . "' LIMIT 1";
@@ -76,5 +83,13 @@ class User extends ActiveRecord {
   }
   public function createToken() {
     $this->token = uniqid();
+  }
+  public function checkPasswordAndVerified($password) {
+    $result = password_verify($password, $this->password);
+    if(!$result || !$this->confirmed) {
+      self::$alerts['error'][] = 'Incorrect Password or your account is not confirmed';
+    } else {
+      return true;
+    }
   }
 }

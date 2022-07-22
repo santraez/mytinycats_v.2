@@ -25,6 +25,8 @@ class LoginController {
           $user->hashPassword();
           // TOKEN GENERATOR
           $user->createToken();
+          // ADD DATE
+          $user->created = date('Y-m-d H:i:s');
           // SEND EMAIL
           $email = new Email($user->email, $user->display, $user->token);
           $email->sendConfirm();
@@ -64,7 +66,7 @@ class LoginController {
               $_SESSION['admin'] = $user->admin ?? null;
               header('Location: /admin');
             } else {
-              header('Location: /user');
+              header('Location: /resources');
             }
           }
         } else {
@@ -118,10 +120,21 @@ class LoginController {
       User::setAlert('error', 'Invalid Token');
       $error = true;
     }
-    if($_SERVER['REQUEST_METHOD'] === POST) {
-      
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      // READ NEW PASSWORD AND SAVE
+      $password = new User($_POST);
+      $alerts = $password->validatePassword();
+      if(empty($alerts)) {
+        $user->password = null;
+        $user->password = $password->password;
+        $user->hashPassword();
+        $user->token = null;
+        $result = $user->save();
+        if($result) {
+          header('Location: /login');
+        }
+      }
     }
-    //debug($user);
     $alerts = User::getAlerts();
     $router->render('auth/recover-password', [
       'alerts' => $alerts,

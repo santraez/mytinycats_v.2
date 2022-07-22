@@ -22,5 +22,7 @@ $router->post('/signup', [LoginController::class, 'signup']);
 // CONFIRM ACCOUNT
 $router->get('/confirm-account', [LoginController::class, 'confirm']);
 $router->get('/message', [LoginController::class, 'message']);
+// PRIVATE AREA
+//$router->get('/resources');
 // CHECK ROUTER
 $router->checkRoutes();
